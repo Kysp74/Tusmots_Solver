@@ -1,19 +1,17 @@
 package fr.psyk.tusmotssolver;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +26,7 @@ public class MainActivity extends AppCompatActivity{
 
    List<String> retourMots;
 int nbLettre=4, combienDeLettre;
+    String total = "AZERTYUIOPMLKJHGFDSQWXCVBN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,7 @@ int nbLettre=4, combienDeLettre;
 
         MyDatabaseHelper db = new MyDatabaseHelper(this);
         int newVersionDbMots = 0;
-        int versionDbMots =0;
+        int versionDbMots;
         versionDbMots = db.getVersion();
 
         InputStream insertsStream = this.getResources().openRawResource(R.raw.mots1);
@@ -91,16 +90,13 @@ int nbLettre=4, combienDeLettre;
 
         combienDeLettre =recupValueSeek();
         Button buttonGo = findViewById(R.id.game_button_go);
+        EditText lettrearemove = findViewById(R.id.main_lettreasupprimer);
+        buttonGo.setOnClickListener(v -> {
 
-        buttonGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               String masque = gesMasque();
-
-                creeMaliste(nbLettre,masque);
-
-            }
+           String masque = gesMasque();
+            Editable lettreAEnlever = lettrearemove.getText();
+            creeMaliste(nbLettre,masque,lettreAEnlever);
+            creeViewList();
         });
 
 
@@ -110,10 +106,24 @@ int nbLettre=4, combienDeLettre;
 
     }
 
+    private void creeViewList() {
+        ListView listView = findViewById(R.id.listView);
+        ArrayAdapter<String> arrayAdapter
+                = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, retourMots);
+        listView.setAdapter(arrayAdapter);
+
+        System.out.println(retourMots.size());
+
+
+        final StableArrayAdapter adapter = new StableArrayAdapter(this,
+                android.R.layout.simple_list_item_1, retourMots);
+        listView.setAdapter(adapter);
+    }
+
     private String gesMasque() {
 
         String motmasque ="";
-        String total = "AZERTYUIOPMLKJHGFDSQWXCVBN";
+
         EditText l1 = findViewById(R.id.main_l1);
         EditText l2 = findViewById(R.id.main_l2);
         EditText l3 = findViewById(R.id.main_l3);
@@ -198,7 +208,7 @@ int nbLettre=4, combienDeLettre;
 
 
         TextView mTextView_Seek = findViewById(R.id.game_textView_Seek);
-        SeekBar mySeekBar = (SeekBar) findViewById(R.id.game_seekBar);
+        SeekBar mySeekBar = findViewById(R.id.game_seekBar);
         mySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 
@@ -226,22 +236,29 @@ int nbLettre=4, combienDeLettre;
         return nbLettre;
     }
 
-    private void creeMaliste(int nblettre, String masque) {
+    private void creeMaliste(int nblettre, String masque, Editable remove) {
         MyDatabaseHelper db = new MyDatabaseHelper(this);
-        ListView listView = (ListView)findViewById(R.id.listView);
+
         retourMots = db.getmot(nblettre, masque);
-        ArrayAdapter<String> arrayAdapter
-                = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , retourMots);
-        listView.setAdapter(arrayAdapter);
+        List<String> newList = new ArrayList<>(retourMots);
+        if (remove.length()>0){
+            char[] listeLettreRemove = remove.toString().toCharArray();
+            for (String mot : newList){
 
-        System.out.println(retourMots.size());
+                for (char c: listeLettreRemove){
+                    if(mot.contains(String.valueOf(c))){
+                        retourMots.remove(mot);
+
+                    }
+                }
 
 
-        final ArrayList<String> list = new ArrayList<String>();
+            }
 
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, retourMots);
-        listView.setAdapter(adapter);
+
+
+        }
+
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -271,9 +288,9 @@ int nbLettre=4, combienDeLettre;
             // do nothing
         }
     }
-    private class StableArrayAdapter extends ArrayAdapter<String> {
+    private static class StableArrayAdapter extends ArrayAdapter<String> {
 
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> mIdMap = new HashMap<>();
 
         public StableArrayAdapter(Context context, int textViewResourceId,
                                   List<String> objects) {

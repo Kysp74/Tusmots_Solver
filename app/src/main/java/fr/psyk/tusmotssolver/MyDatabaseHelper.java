@@ -5,10 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
-import android.text.style.AlignmentSpan;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,8 +92,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
+        assert cursor != null;
         int version =  Integer.parseInt(cursor.getString(0));
         // return note
+        cursor.close();
         return version;
     }
 
@@ -128,24 +127,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                motatrouver.subList(1000, motatrouver.size()).clear();
            }
 
-
+            cursor.close();
 
         return motatrouver ;
         }
 
-        public boolean motEstPresent(String motATester){
-            String nomTable = "l" + motATester.length();
-            String sql = "SELECT  count(*) FROM " +nomTable+ " WHERE mots = '" +motATester + "';";
-            SQLiteDatabase db = this.getReadableDatabase();
-            Log.i(TAG, "MyDatabaseHelper.getMotExiste");
-            SQLiteStatement statement = db.compileStatement(sql);
 
-            try {
-                return statement.simpleQueryForLong() > 0;
-            } finally {
-                statement.close();
-            }
-        }
 
 }
 

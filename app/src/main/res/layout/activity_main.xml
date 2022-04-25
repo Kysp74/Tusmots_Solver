@@ -13,6 +13,7 @@
         android:layout_gravity="center"
         android:orientation="horizontal"
         android:id="@+id/game_train_layout"
+        android:padding="5dp"
        >
 
         <TextView
@@ -54,7 +55,8 @@
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:padding="5dp">
 
         <TableRow
             android:layout_width="wrap_content"
@@ -234,6 +236,30 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lettres a supprimer:"
+            android:padding="5dp"/>
+
+        <EditText
+            android:id="@+id/main_lettreasupprimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="20"
+            android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN"
+            android:maxLength="20"
+            android:padding="5dp"/>
+
+
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
