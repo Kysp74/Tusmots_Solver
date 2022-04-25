@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/game_train_layout"
+       >
+
+        <TextView
+            android:id="@+id/game_textView_Seek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:text="4" />
+
+        <SeekBar
+            android:id="@+id/game_seekBar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="12dp"
+
+            android:max="12"
+            android:min="4" />
+
+        <Button
+            android:id="@+id/game_button_go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:text="Go !!" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <EditText
+                android:id="@+id/main_l1"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:cursorVisible="false"
+                android:nextFocusDown = "@+id/main_l2"
+                android:selectAllOnFocus="true"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l2"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:nextFocusDown = "@+id/main_l3"
+                android:selectAllOnFocus="true"
+                android:cursorVisible="false"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l3"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:nextFocusDown = "@+id/main_l4"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l4"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:nextFocusDown = "@+id/main_l5"
+                android:selectAllOnFocus="true"
+                android:cursorVisible="false"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l5"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:nextFocusDown = "@+id/main_l6"
+                android:inputType="textCapCharacters"
+                android:selectAllOnFocus="true"
+                android:cursorVisible="false"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l6"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:nextFocusDown = "@+id/main_l7"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l7"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:nextFocusDown = "@+id/main_l8"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l8"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:nextFocusDown = "@+id/main_l9"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l9"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:imeOptions="actionNext"
+                android:padding="3dp"
+                android:inputType="textCapCharacters"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:nextFocusDown = "@+id/main_l10"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l10"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:nextFocusDown = "@+id/main_l11"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+            android:id="@+id/main_l11"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+                android:ems="1"
+                android:padding="3dp"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:cursorVisible="false"
+                android:selectAllOnFocus="true"
+                android:nextFocusDown = "@+id/main_l12"
+                android:text=" "
+                android:maxLength="1"/>
+            <EditText
+                android:id="@+id/main_l12"
+                android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="1"
+                android:imeOptions="actionNext"
+                android:padding="3dp"
+                android:selectAllOnFocus="true"
+                android:cursorVisible="false"
+                android:inputType="textCapCharacters"
+                android:text=" "
+                android:maxLength="1"/>
+        </TableRow>
+    </TableLayout>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listView"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        />
+
+
+</LinearLayout>
