@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity{
 
 
    List<String> retourMots;
-int nbLettre=4, combienDeLettre;
+    List<String> listOk = new ArrayList<>();
+    int nbLettre=4, combienDeLettre;
     String total = "AZERTYUIOPMLKJHGFDSQWXCVBN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +92,13 @@ int nbLettre=4, combienDeLettre;
         combienDeLettre =recupValueSeek();
         Button buttonGo = findViewById(R.id.game_button_go);
         EditText lettrearemove = findViewById(R.id.main_lettreasupprimer);
+        EditText lettreAContenir = findViewById(R.id.main_lettrecontenu);
         buttonGo.setOnClickListener(v -> {
 
            String masque = gesMasque();
-            Editable lettreAEnlever = lettrearemove.getText();
-            creeMaliste(nbLettre,masque,lettreAEnlever);
+            String lettreAEnlever = lettrearemove.getText().toString();
+            String lettreaprendre = lettreAContenir.getText().toString();
+            creeMaliste(nbLettre,masque,lettreAEnlever,lettreaprendre);
             creeViewList();
         });
 
@@ -108,11 +111,16 @@ int nbLettre=4, combienDeLettre;
 
     private void creeViewList() {
         ListView listView = findViewById(R.id.listView);
+
+        if (retourMots.size()> 1000){
+
+            retourMots.subList(1000, retourMots.size()).clear();
+        }
         ArrayAdapter<String> arrayAdapter
                 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, retourMots);
         listView.setAdapter(arrayAdapter);
 
-        System.out.println(retourMots.size());
+
 
 
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
@@ -236,28 +244,13 @@ int nbLettre=4, combienDeLettre;
         return nbLettre;
     }
 
-    private void creeMaliste(int nblettre, String masque, Editable remove) {
+    private void creeMaliste(int nblettre, String masque, String remove, String aprendre) {
         MyDatabaseHelper db = new MyDatabaseHelper(this);
 
-        retourMots = db.getmot(nblettre, masque);
-        List<String> newList = new ArrayList<>(retourMots);
-        if (remove.length()>0){
-            char[] listeLettreRemove = remove.toString().toCharArray();
-            for (String mot : newList){
-
-                for (char c: listeLettreRemove){
-                    if(mot.contains(String.valueOf(c))){
-                        retourMots.remove(mot);
-
-                    }
-                }
-
-
-            }
+        retourMots = db.getmot(nblettre, masque,remove,aprendre);
 
 
 
-        }
 
     }
 

@@ -109,11 +109,36 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
      db.update("version", cv, where,null);
         }
 
-        public List<String> getmot(int nblettre,String masque){
+        public List<String> getmot(int nblettre,String masque,String lettreRemove , String lettreGarde){
             List<String> motatrouver = new ArrayList<>();
-            Log.i(TAG, "MyDatabaseHelper.getmot de " + nblettre + " lettres");
-           String Query = " SELECT * FROM l"+nblettre+" WHERE mots LIKE '"+masque+"';";
+            Log.i(TAG, "MyDatabaseHelper.getmot de " + nblettre + " lettres" );
             SQLiteDatabase db = this.getReadableDatabase();
+            String Query = " SELECT * FROM l"+nblettre+" WHERE mots LIKE '"+masque+"';";
+
+            if (lettreRemove.length()>0){
+
+                String aAjouter = "";
+                char[] listeLettreRemove = lettreRemove.toCharArray();
+                for (char c: listeLettreRemove){
+                   aAjouter = aAjouter + " AND mots NOT LIKE '%" + c + "%'";
+                }
+                aAjouter = aAjouter + ";";
+                Query = Query.replace(";", aAjouter);
+            }
+
+            if (lettreGarde.length()>0){
+
+                String aAjouter = " AND mots LIKE '%";
+                char[] listeLettreGarde = lettreGarde.toCharArray();
+                for (char d: listeLettreGarde){
+                    aAjouter = aAjouter +  d + "%";
+                }
+                aAjouter = aAjouter + "';";
+                Query = Query.replace(";", aAjouter);
+            }
+
+            System.out.println(Query);
+
             Cursor cursor = db.rawQuery(Query,null);
             if (cursor.moveToFirst()) {
                do {
@@ -122,10 +147,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
 
-           if (motatrouver.size()> 1000){
 
-               motatrouver.subList(1000, motatrouver.size()).clear();
-           }
 
             cursor.close();
 
