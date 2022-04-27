@@ -1,9 +1,14 @@
 package fr.psyk.tusmotssolver;
 
+import static java.lang.reflect.Array.getInt;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +16,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
@@ -23,17 +29,23 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
-
+    private static final String BUNDLE_STATE_COMPTEUR = "BUNDLE_STATE_COMPTEUR";
    List<String> retourMots;
     List<String> listOk = new ArrayList<>();
     int nbLettre=4, combienDeLettre;
     String total = "AZERTYUIOPMLKJHGFDSQWXCVBN";
+    int compteur ;
+    int compteur_affichage =0;
+    private static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
+    private static final String SHARED_PREF_USER_INFO_COMPTEUR = "SHARED_PREF_USER_INFO_COMPTEUR";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        compteur = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getInt(SHARED_PREF_USER_INFO_COMPTEUR, -1);
+        ListView listView = findViewById(R.id.listView);
+        TextView text_compteur = findViewById(R.id.textView_TricheCounter);
         EditText code1=findViewById(R.id.main_l1);
         EditText code2=findViewById(R.id.main_l2);
         EditText code3=findViewById(R.id.main_l3);
@@ -89,22 +101,61 @@ public class MainActivity extends AppCompatActivity{
             System.out.println("meme version");
         }
 
+
+
         combienDeLettre =recupValueSeek();
         Button buttonGo = findViewById(R.id.game_button_go);
         EditText lettrearemove = findViewById(R.id.main_lettreasupprimer);
         EditText lettreAContenir = findViewById(R.id.main_lettrecontenu);
         buttonGo.setOnClickListener(v -> {
-
+            compteur = compteur +1;
+            text_compteur.setText(String.valueOf(compteur));
            String masque = gesMasque();
             String lettreAEnlever = lettrearemove.getText().toString();
             String lettreaprendre = lettreAContenir.getText().toString();
             creeMaliste(nbLettre,masque,lettreAEnlever,lettreaprendre);
             creeViewList();
+
         });
 
+        TextView textView = findViewById(R.id.textView_Comptient);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (compteur_affichage> 10){
+                    text_compteur.setText(String.valueOf(compteur));
+                    text_compteur.setVisibility(View.VISIBLE);
+                }else{
+                    compteur_affichage = compteur_affichage + 1;
+                //    System.out.println(compteur_affichage);
+                }
+            }
+        });
+        Button buttonReset = findViewById(R.id.button_reset);
 
-
-
+        buttonReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                code1.setText(" ");
+                code2.setText(" ");
+                code3.setText(" ");
+                code4.setText(" ");
+                code5.setText(" ");
+                code6.setText(" ");
+                code7.setText(" ");
+                code8.setText(" ");
+                code9.setText(" ");
+                code10.setText(" ");
+                code11.setText(" ");
+                code12.setText(" ");
+                lettrearemove.setText("");
+                lettreAContenir.setText("");
+                listView.setAdapter(null);
+                compteur_affichage = 0;
+                text_compteur.setVisibility(View.INVISIBLE);
+                recupValueSeek();
+            }
+        });
 
 
     }
@@ -305,6 +356,17 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+
+
+        getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
+                .edit()
+                .putInt(SHARED_PREF_USER_INFO_COMPTEUR, compteur)
+                .apply();
+
+    }
 
 }

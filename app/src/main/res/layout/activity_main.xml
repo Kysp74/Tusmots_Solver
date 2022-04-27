@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,13 +17,7 @@
         android:padding="5dp"
        >
 
-        <TextView
-            android:id="@+id/game_textView_Seek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:text="4" />
+
 
         <SeekBar
             android:id="@+id/game_seekBar"
@@ -35,22 +30,39 @@
 
             android:max="12"
             android:min="4" />
-
+        <TextView
+            android:id="@+id/game_textView_Seek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:text="4" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
         <Button
             android:id="@+id/game_button_go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:text="Go !!" />
+            android:layout_margin="2dp"
+            android:text="Cherche" />
+        <Button
+            android:id="@+id/button_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:layout_margin="2dp"
+
+            android:layout_gravity="center"/>
+
 
     </LinearLayout>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+
+
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -230,7 +242,23 @@
                 android:text=" "
                 android:maxLength="1"/>
         </TableRow>
+
+
     </TableLayout>
+
+    <TextView
+        android:layout_width="20dp"
+        android:id="@+id/textView_TricheCounter"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+android:visibility="invisible"
+        android:text="0"
+        />
+
+
+
+
+
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -245,6 +273,7 @@
 
         <TextView
             android:layout_width="wrap_content"
+            android:id="@+id/textView_Comptient"
             android:layout_height="wrap_content"
             android:text="Ne contient pas de :"
             android:padding="5dp"/>
@@ -298,6 +327,12 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 
 
 </LinearLayout>
