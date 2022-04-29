@@ -369,4 +369,17 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
+                .edit()
+                .putInt(SHARED_PREF_USER_INFO_COMPTEUR, compteur)
+                .apply();
+
+    }
+
+
 }
