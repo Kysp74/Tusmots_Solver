@@ -1,14 +1,10 @@
 package fr.psyk.tusmotssolver;
 
-import static java.lang.reflect.Array.getInt;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -16,39 +12,61 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity{
 
-    private static final String BUNDLE_STATE_COMPTEUR = "BUNDLE_STATE_COMPTEUR";
-   List<String> retourMots;
-    List<String> listOk = new ArrayList<>();
-    int nbLettre=4, combienDeLettre;
+      List<String> retourMots;
+       int nbLettre=4, combienDeLettre;
     String total = "AZERTYUIOPMLKJHGFDSQWXCVBN";
+    String result ="",parseId;
     int compteur ;
     int compteur_affichage =0;
     private static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
     private static final String SHARED_PREF_USER_INFO_COMPTEUR = "SHARED_PREF_USER_INFO_COMPTEUR";
+    private static final String SHARED_PREF_USER_PARSE_ID = "SHARED_PREF_USER_PARSE_ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        parseId =getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getString(SHARED_PREF_USER_PARSE_ID, "");
         compteur = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getInt(SHARED_PREF_USER_INFO_COMPTEUR, -1);
+                System.out.println("parseid avant gen "+ parseId);
+        if (parseId==""){
+            ParseObject firstObject = new  ParseObject("users");
+            firstObject.put("usage",0);
+            firstObject.saveInBackground(e -> {
+                if (e != null){
+                    Log.e("MainActivity", e.getLocalizedMessage());
+                }else{
+                    Log.d("MainActivity","Object saved.");
+                    parseId =String.format(firstObject.getObjectId());
+                    System.out.println("result est gen "+ parseId);
+                    getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
+                            .edit()
+                            .putString(SHARED_PREF_USER_PARSE_ID, parseId)
+                            .apply();
+                }
+            });
+
+        }
         ListView listView = findViewById(R.id.listView);
         TextView text_compteur = findViewById(R.id.textView_TricheCounter);
         EditText code1=findViewById(R.id.main_l1);
@@ -165,8 +183,8 @@ public class MainActivity extends AppCompatActivity{
                 compteur_affichage = 0;
                 text_compteur.setVisibility(View.INVISIBLE);
 
-                resetMasqueLayout();
-
+             //   resetMasqueLayout();
+    initMasqueLayout(nbLettre);
                 recupValueSeek();
             }
         });
@@ -187,13 +205,22 @@ public class MainActivity extends AppCompatActivity{
             editText.setText(" ");
 
         }
-        EditText editText = findViewById(R.id.main_l1);
-        editText.requestFocus();
+
+
+
     }
 
     private void initMasqueLayout(int nbLettre) {
         resetMasqueLayout();
         Context context = this;
+        for (int j = 1; j < 13; j++) {
+
+            int idAPrendre =getResources().getIdentifier("main_l"+j, "id", context.getPackageName());
+            EditText editText = findViewById(idAPrendre);
+            editText.setVisibility(View.VISIBLE);
+            editText.setText(" ");
+
+        }
 
         for (int j = nbLettre+1; j < 13; j++) {
 
@@ -414,7 +441,20 @@ public class MainActivity extends AppCompatActivity{
                 .edit()
                 .putInt(SHARED_PREF_USER_INFO_COMPTEUR, compteur)
                 .apply();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 
+// Retrieve the object by id
+        query.getInBackground(parseId, new GetCallback<ParseObject>() {
+            public void done(ParseObject gameScore, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to your Parse Server. playerName hasn't changed.
+                    gameScore.put("usage", compteur);
+                    gameScore.saveInBackground();
+                    Log.d("MainActivity","Object saved with parseId " + parseId);
+                }
+            }
+        });
     }
 
 
@@ -426,6 +466,22 @@ public class MainActivity extends AppCompatActivity{
                 .edit()
                 .putInt(SHARED_PREF_USER_INFO_COMPTEUR, compteur)
                 .apply();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+
+// Retrieve the object by id
+        query.getInBackground(parseId, new GetCallback<ParseObject>() {
+            public void done(ParseObject gameScore, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to your Parse Server. playerName hasn't changed.
+                    gameScore.put("usage", compteur);
+                    gameScore.saveInBackground();
+                    Log.d("MainActivity","Object saved with parseId " + parseId);
+                }
+            }
+        });
+
 
     }
 

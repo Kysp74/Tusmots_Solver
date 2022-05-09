@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Tusmots Helper</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Paste BOTH strings as required -->
+    <string name="back4app_app_id">apXRO3vy95b7QodR7cZytadf6TPVJppNH6VTwsJT</string>
+    <string name="back4app_client_key">7TWFPBwzZtSyx6MvUbvqaQ7YRo3AzUkdNm6Yfly0</string>
 </resources>
