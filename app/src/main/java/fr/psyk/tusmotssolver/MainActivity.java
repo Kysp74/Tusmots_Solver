@@ -8,16 +8,21 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
-
+        initMasqueLayout(nbLettre);
         combienDeLettre =recupValueSeek();
         Button buttonGo = findViewById(R.id.game_button_go);
         EditText lettrearemove = findViewById(R.id.main_lettreasupprimer);
@@ -114,6 +119,12 @@ public class MainActivity extends AppCompatActivity{
             String lettreAEnlever = lettrearemove.getText().toString();
             String lettreaprendre = lettreAContenir.getText().toString();
             creeMaliste(nbLettre,masque,lettreAEnlever,lettreaprendre);
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+
             creeViewList();
 
         });
@@ -153,10 +164,46 @@ public class MainActivity extends AppCompatActivity{
                 listView.setAdapter(null);
                 compteur_affichage = 0;
                 text_compteur.setVisibility(View.INVISIBLE);
+
+                resetMasqueLayout();
+
                 recupValueSeek();
             }
         });
 
+
+    }
+
+
+
+    private void resetMasqueLayout() {
+        Context context = this;
+
+        for (int j = 1; j < 13; j++) {
+
+            int idAPrendre =getResources().getIdentifier("main_l"+j, "id", context.getPackageName());
+            EditText editText = findViewById(idAPrendre);
+            editText.setVisibility(View.VISIBLE);
+            editText.setText(" ");
+
+        }
+        EditText editText = findViewById(R.id.main_l1);
+        editText.requestFocus();
+    }
+
+    private void initMasqueLayout(int nbLettre) {
+        resetMasqueLayout();
+        Context context = this;
+
+        for (int j = nbLettre+1; j < 13; j++) {
+
+            int idAPrendre =getResources().getIdentifier("main_l"+j, "id", context.getPackageName());
+           EditText editText = findViewById(idAPrendre);
+           editText.setVisibility(View.INVISIBLE);
+
+        }
+            EditText editText = findViewById(R.id.main_l1);
+        editText.requestFocus();
 
     }
 
@@ -182,6 +229,7 @@ public class MainActivity extends AppCompatActivity{
     private String gesMasque() {
 
         String motmasque ="";
+
 
         EditText l1 = findViewById(R.id.main_l1);
         EditText l2 = findViewById(R.id.main_l2);
@@ -277,7 +325,7 @@ public class MainActivity extends AppCompatActivity{
                 mTextView_Seek.setText(String.valueOf(progress));
                 String valeur = mTextView_Seek.getText().toString();
                 nbLettre = Integer.parseInt(valeur);
-
+                initMasqueLayout(nbLettre);
             }
 
             @Override

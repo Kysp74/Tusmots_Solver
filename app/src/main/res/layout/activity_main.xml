@@ -68,12 +68,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="5dp">
+        android:padding="5dp"       >
 
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:id="@+id/main_masque">
             <EditText
                 android:id="@+id/main_l1"
                 android:digits="AZERTYUIOPMLKJHGFDSQWXCVBN "
